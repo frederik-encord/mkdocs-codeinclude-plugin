@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "mkdocs-codeinclude-plugin"
+version = "0.1.0"
+description = ""
+authors = ["Frederik Hvilshøj <frederik@cord.tech>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "mkdocs_codeinclude_plugin" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mkdocs = ">=1.2"
+pygments = ">=2.9.0"
+
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0.13.13"
+pyfzf = "^0.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

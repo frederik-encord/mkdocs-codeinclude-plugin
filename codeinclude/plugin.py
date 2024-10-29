@@ -89,7 +89,7 @@ class CodeIncludePlugin(BasePlugin):
                         f"Found code-include end without preceding start at line {index}"
                     )
                 last = index
-                content = "\n".join(filter(lambda line: len(line.strip()), lines[first : last + 1]))
+                content = "\n".join(filter(lambda line: len(line.strip()) > 0, lines[first : last + 1]))
                 ci_blocks.append(CodeIncludeBlock(first, last, content))
                 in_block = False
         return ci_blocks
@@ -135,8 +135,9 @@ class CodeIncludePlugin(BasePlugin):
     def get_substitute(self, page, title, filename, lines, block, inside_block):
         # Compute the fence header
         lang_code = get_lang_class(filename)
-        header = lang_code
         title = title.strip()
+        if title: 
+            title = f'title=\"{title}\"'
 
         # Select the code content
         page_parent_dir = os.path.dirname(page.file.abs_src_path)
@@ -155,8 +156,7 @@ class CodeIncludePlugin(BasePlugin):
             # Newest version of pymdownx requires everything to be indented 4-spaces.
             dedented = "".join([f'    {line}\n' for line in dedented.split('\n')])
             return f"""
-=== "{title}"
-    ```{header}
+    ```{lang_code} {title}
 {dedented}
     ```
 
@@ -166,14 +166,14 @@ class CodeIncludePlugin(BasePlugin):
             and len(title) > 0
         ):
             return f"""
-```{header} tab="{title}"
+```{lang_code} tab="{title}"
 {dedented}
 ```
 
 """
         else:
             return f"""
-```{header}
+```{lang_code}
 {dedented}
 ```
 

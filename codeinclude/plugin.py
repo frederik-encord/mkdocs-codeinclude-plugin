@@ -156,9 +156,9 @@ class CodeIncludePlugin(BasePlugin):
             # Newest version of pymdownx requires everything to be indented 4-spaces.
             dedented = "".join([f'    {line}\n' for line in dedented.split('\n')])
             return f"""
-    ```{lang_code} {title}
+```{lang_code} {title}
 {dedented}
-    ```
+```
 
 """
         elif (

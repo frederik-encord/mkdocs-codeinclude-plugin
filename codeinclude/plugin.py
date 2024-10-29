@@ -89,7 +89,7 @@ class CodeIncludePlugin(BasePlugin):
                         f"Found code-include end without preceding start at line {index}"
                     )
                 last = index
-                content = "\n".join(lines[first : last + 1])
+                content = "\n".join(filter(lambda line: len(line.strip()), lines[first : last + 1]))
                 ci_blocks.append(CodeIncludeBlock(first, last, content))
                 in_block = False
         return ci_blocks

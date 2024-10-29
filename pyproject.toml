@@ -16,6 +16,9 @@ pygments = ">=2.9.0"
 ipdb = "^0.13.13"
 pyfzf = "^0.3.1"
 
+[tool.poetry.plugins."mkdocs.plugins"]
+codeinclude = "codeinclude.plugin:CodeIncludePlugin"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

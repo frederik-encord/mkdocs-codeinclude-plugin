@@ -5,7 +5,7 @@ description = ""
 authors = ["Frederik Hvilshøj <frederik@cord.tech>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "mkdocs_codeinclude_plugin" }]
+packages = [{ include = "codeinclude" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"

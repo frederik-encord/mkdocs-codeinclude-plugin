@@ -156,7 +156,7 @@ class CodeIncludePlugin(BasePlugin):
 
         if self.config.get("title_mode") == "pymdownx.tabbed" and len(title) > 0:
             # Newest version of pymdownx requires everything to be indented 4-spaces.
-            dedented = "".join([f'{line}\n' for line in dedented.split('\n')])
+            dedented = "".join([f'{line.replace("`", "\`")}\n' for line in dedented.split('\n')])
             return f"""
 ```{lang_code} {title} {params}
 {dedented}

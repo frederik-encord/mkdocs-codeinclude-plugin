@@ -108,16 +108,17 @@ class CodeIncludePlugin(BasePlugin):
 
                 if raw_params:
                     params = dict(token.split(":") for token in shlex.split(raw_params))
-                    lines = params.get("lines", "")
-                    block = params.get("block", "")
-                    inside_block = params.get("inside_block", "")
+                    lines = params.pop("lines", "")
+                    block = params.pop("block", "")
+                    inside_block = params.pop("inside_block", "")
                 else:
                     lines = ""
                     block = ""
                     inside_block = ""
+                    params = {}
 
                 code_block = self.get_substitute(
-                    page, title, filename, lines, block, inside_block
+                    page, title, filename, lines, block, inside_block, params
                 )
                 # re-indent
                 code_block = re.sub("^", indent, code_block, flags=re.MULTILINE)
@@ -132,7 +133,7 @@ class CodeIncludePlugin(BasePlugin):
             )
         return replacements
 
-    def get_substitute(self, page, title, filename, lines, block, inside_block):
+    def get_substitute(self, page, title, filename, lines, block, inside_block, params):
         # Compute the fence header
         lang_code = get_lang_class(filename)
         title = title.strip()
@@ -151,12 +152,13 @@ class CodeIncludePlugin(BasePlugin):
         )
 
         dedented = textwrap.dedent(selected_content)
+        params = " ".join([f'{k}="{v}"' for k, v in params.items()])
 
         if self.config.get("title_mode") == "pymdownx.tabbed" and len(title) > 0:
             # Newest version of pymdownx requires everything to be indented 4-spaces.
             dedented = "".join([f'    {line}\n' for line in dedented.split('\n')])
             return f"""
-```{lang_code} {title}
+```{lang_code} {title} {params}
 {dedented}
 ```
 
@@ -166,14 +168,14 @@ class CodeIncludePlugin(BasePlugin):
             and len(title) > 0
         ):
             return f"""
-```{lang_code} tab="{title}"
+```{lang_code} tab="{title}" {params}
 {dedented}
 ```
 
 """
         else:
             return f"""
-```{lang_code}
+```{lang_code} {params}
 {dedented}
 ```
 

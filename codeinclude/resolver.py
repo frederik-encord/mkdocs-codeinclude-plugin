@@ -10,7 +10,6 @@ def select(
     inside_block=None,
     lang=None,
 ):
-
     selected_lines = []
 
     if lines:
@@ -94,6 +93,10 @@ def select(
             # Use the last line indent so that the result can be un-indented by the caller.
             indent = leading_spaces(last_line)
             result += f"\n{indent}⋯\n\n"
+        if i - 1 >= len(source_lines):
+            raise ValueError(
+                f"Attempting to split at: {i - 1} when only {len(source_lines)} many source lines. Check your ranges"
+            )
         result += source_lines[i - 1] + "\n"
         last_selected = i
 
